@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from blog.models import Post
-from blog.forms import PostForm, CommentForm
+from .models import Post
+from .forms import PostForm, CommentForm
 # Create your views here.
 
 class AboutView(TemplateView):
