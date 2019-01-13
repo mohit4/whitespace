@@ -2,4 +2,45 @@
 
 {% block content %}
 
+<div class="my-2 p-4">
+    <h3 class="card-title">{{ post.title }}</h3>
+    {% if post.published_date %}
+        <p class="text-muted text-small">{{ post.author.username }} on {{ post.published_date }}</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="#" class="btn btn-danger">Delete</a>
+            {% if not post.published_date %}
+                <a href="{% url 'blog:post_publish' pk=post.pk %}" class="btn btn-secondary">Publish</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <hr>
+    <p class="card-text">{{ post.text|safe|linebreaksbr }}</p>
+    <hr>
+
+    <p class="text-muted">{{ post.approve_comments.count }} comment(s)</p>
+    <div class="container">
+        {% for comment in post.approve_comments %}
+            <br>
+            {% if user.is_authenticated or comment.approved_comment %}
+                <blockquote class="blockquote mb-0">
+                    <p>{{ comment.text|safe|linebreaksbr }}</p>
+                    <footer class="blockquote-footer">{{ comment.author }} on {{ comment.created_date }}</footer>
+                </blockquote>
+                {% if not comment.approved_comment %}
+                    <a href="{% url 'blog:comment_approve' pk=comment.pk %}">Approve</a>
+                    <a href="{% url 'blog:comment_remove' pk=comment.pk %}">Remove</a>
+                {% endif %}
+            {% endif %}
+            {% empty %}
+            <p class="text-muted">No comments</p>
+        {% endfor %}
+    </div>
+
+</div>
+
 {% endblock %}
