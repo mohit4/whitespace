@@ -2,4 +2,15 @@
 
 {% block content %}
 
+{% for post in posts %}
+    <div class="card my-2 p-4">
+        <h3 class="card-title">{{ post.title }}</h3>
+        <p class="text-muted text-small">{{ post.author.username }} on {{ post.created_date }}</p>
+        <hr>
+        <p class="card-text">{{ post.text|truncatechars:250 }}</p>
+        <p class="text-muted">{{ post.approve_comments.count }} comments</p>
+        <a href="{% url 'blog:post_detail' pk=post.pk %}" class="card-link">See full article</a>
+    </div>
+{% endfor %}
+
 {% endblock %}
